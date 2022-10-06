@@ -18,45 +18,9 @@ void rot3D(int n, float cosTheta, float sinTheta, float* x, float* y)
   }
 }
 
-// ============================================================================
-// Vector version 1
-// ============================================================================
-
-void rot3D_1(Int n, Float cosTheta, Float sinTheta, Ptr<Float> x, Ptr<Float> y)
-{
-  For (Int i = 0, i < n, i = i+16)
-    Float xOld = x[i];
-    Float yOld = y[i];
-    x[i] = xOld * cosTheta - yOld * sinTheta;
-    y[i] = yOld * cosTheta + xOld * sinTheta;
-  End
-}
 
 // ============================================================================
-// Vector version 2
-// ============================================================================
-
-void rot3D_2(Int n, Float cosTheta, Float sinTheta, Ptr<Float> x, Ptr<Float> y)
-{
-  Int inc = 16;
-  Ptr<Float> p = x + index();
-  Ptr<Float> q = y + index();
-  gather(p); gather(q);
- 
-  Float xOld, yOld;
-  For (Int i = 0, i < n, i = i+inc)
-    gather(p+inc); gather(q+inc); 
-    receive(xOld); receive(yOld);
-    store(xOld * cosTheta - yOld * sinTheta, p);
-    store(yOld * cosTheta + xOld * sinTheta, q);
-    p = p+inc; q = q+inc;
-  End
-
-  receive(xOld); receive(yOld);
-}
-
-// ============================================================================
-// Vector version 3
+// Vector version
 // ============================================================================
 
 void rot3D_3(Int n, Float cosTheta, Float sinTheta, Ptr<Float> x, Ptr<Float> y)
@@ -88,7 +52,7 @@ int main()
   timeval tvStart, tvEnd, tvDiff;
 
   // Number of vertices and angle of rotation
-  const int N = 19200; // 192000
+  const int N = 192000; // 192000
   const float THETA = (float) 3.14159;
 
 #ifdef USE_SCALAR_VERSION
