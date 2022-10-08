@@ -7,7 +7,7 @@ sudo ./Rot3D
 ```
 sudo apt-get install git
 git clone https://github.com/rax5555555/GPULib.git
-cd QPULib/Tests
+cd GPULib/Tests
 make QPU=1 Rot3D
 sudo ./Rot3D
 ```
